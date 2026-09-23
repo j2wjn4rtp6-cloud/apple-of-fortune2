@@ -1,739 +1,1495 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,
+      maximum-scale=1.0,user-scalable=no">
 
-  <meta name="theme-color" content="#07130d">
-  <meta
-    name="description"
-    content="Apple of Fortune — choisis les bonnes pommes et progresse de niveau."
-  >
+<meta name="theme-color" content="#07130d">
 
-  <title>Apple of Fortune</title>
+<title>Apple of Fortune</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+<style>
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-    }
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
-    body {
-      min-height: 100vh;
-      min-height: 100dvh;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, #173b27 0%, transparent 35%),
-        linear-gradient(160deg, #07130d, #10251a);
-      color: white;
-      display: flex;
-      justify-content: center;
-    }
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+}
 
-    button {
-      font-family: inherit;
-    }
+body{
+  min-height:100vh;
+  min-height:100dvh;
 
-    .app {
-      width: 100%;
-      max-width: 480px;
-      min-height: 100vh;
-      min-height: 100dvh;
-      padding: 18px 15px 25px;
-    }
+  font-family:Arial,Helvetica,sans-serif;
 
-    .header {
-      text-align: center;
-      padding: 8px 0 18px;
-    }
+  background:
+    radial-gradient(circle at top,#174127 0%,transparent 38%),
+    linear-gradient(160deg,#06110b,#10251a);
 
-    .logo {
-      font-size: 58px;
-      line-height: 1;
-      filter: drop-shadow(0 5px 12px rgba(0,0,0,0.35));
-    }
+  color:white;
 
-    h1 {
-      margin: 8px 0 5px;
-      font-size: 28px;
-      font-weight: 800;
-    }
+  display:flex;
+  justify-content:center;
+}
 
-    .subtitle {
-      color: #a9c2b1;
-      font-size: 14px;
-      line-height: 1.4;
-    }
+.app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  padding:15px 14px 25px;
+}
 
-    .panel {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 14px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
+/* HEADER */
 
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-    }
+.header{
+  text-align:center;
+  padding:5px 0 15px;
+}
 
-    .stat {
-      flex: 1;
-      text-align: center;
-      background: rgba(0,0,0,0.25);
-      border-radius: 14px;
-      padding: 11px 5px;
-      min-width: 0;
-    }
+.logo{
+  font-size:52px;
+}
 
-    .stat-title {
-      font-size: 10px;
-      color: #9fb4a5;
-      letter-spacing: 0.4px;
-    }
+h1{
+  margin:5px 0;
+  font-size:27px;
+}
 
-    .stat-value {
-      margin-top: 5px;
-      font-size: 19px;
-      font-weight: 800;
-    }
+.subtitle{
+  color:#9fb8a8;
+  font-size:13px;
+}
 
-    .level {
-      color: #ffd166;
-    }
+/* BALANCE */
 
-    .message {
-      text-align: center;
-      min-height: 24px;
-      margin: 1px 0 14px;
-      font-weight: 700;
-      font-size: 15px;
-    }
+.balance{
+  background:linear-gradient(
+    135deg,
+    rgba(255,209,102,.15),
+    rgba(255,255,255,.06)
+  );
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
+  border:1px solid rgba(255,209,102,.2);
 
-    .apple {
-      aspect-ratio: 1;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(145deg, #214b32, #14291e);
-      color: white;
-      font-size: 28px;
-      cursor: pointer;
-      box-shadow:
-        inset 0 -4px rgba(0,0,0,0.2),
-        0 3px 8px rgba(0,0,0,0.15);
-      transition:
-        transform 0.1s,
-        background 0.2s,
-        opacity 0.2s;
-      touch-action: manipulation;
-    }
+  border-radius:18px;
 
-    .apple:active {
-      transform: scale(0.91);
-    }
+  padding:15px;
 
-    .apple.good {
-      background: linear-gradient(145deg, #31804b, #205c34);
-    }
+  margin-bottom:12px;
 
-    .apple.bad {
-      background: linear-gradient(145deg, #9b3030, #641b1b);
-    }
+  text-align:center;
+}
 
-    .apple:disabled {
-      cursor: default;
-    }
+.balance-title{
+  color:#9fb8a8;
+  font-size:11px;
+}
 
-    .progress-container {
-      margin-top: 15px;
-    }
+.balance-value{
+  margin-top:5px;
+  font-size:27px;
+  font-weight:800;
+  color:#ffd166;
+}
 
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      color: #9fb4a5;
-      font-size: 11px;
-      margin-bottom: 6px;
-    }
+/* PANELS */
 
-    .progress-bar {
-      height: 7px;
-      width: 100%;
-      background: rgba(0,0,0,0.3);
-      border-radius: 10px;
-      overflow: hidden;
-    }
+.panel{
+  background:rgba(255,255,255,.07);
 
-    .progress {
-      height: 100%;
-      width: 0%;
-      background: #ffd166;
-      border-radius: 10px;
-      transition: width 0.25s ease;
-    }
+  border:1px solid rgba(255,255,255,.1);
 
-    .buttons {
-      display: flex;
-      gap: 10px;
-    }
+  border-radius:19px;
 
-    .btn {
-      flex: 1;
-      padding: 14px 10px;
-      border: none;
-      border-radius: 14px;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      touch-action: manipulation;
-      transition: transform 0.1s, opacity 0.2s;
-    }
+  padding:15px;
 
-    .btn:active {
-      transform: scale(0.96);
-    }
+  margin-bottom:12px;
 
-    .new-game {
-      background: #f4a261;
-      color: #17100a;
-    }
+  backdrop-filter:blur(8px);
+}
 
-    .share {
-      background: #229ed9;
-      color: white;
-    }
+/* STATS */
 
-    .result {
-      display: none;
-      text-align: center;
-      padding: 18px 10px 5px;
-    }
+.stats{
+  display:flex;
+  gap:7px;
+}
 
-    .result.show {
-      display: block;
-    }
+.stat{
+  flex:1;
+  text-align:center;
 
-    .result-icon {
-      font-size: 44px;
-      margin-bottom: 5px;
-    }
+  background:rgba(0,0,0,.25);
 
-    .result-title {
-      font-size: 21px;
-      font-weight: 800;
-      margin-bottom: 5px;
-    }
+  border-radius:13px;
 
-    .result-text {
-      color: #a9c2b1;
-      font-size: 13px;
-      line-height: 1.5;
-    }
+  padding:10px 4px;
+}
 
-    .footer {
-      text-align: center;
-      color: #718679;
-      font-size: 10px;
-      margin-top: 18px;
-      line-height: 1.5;
-    }
+.stat-title{
+  color:#8fa698;
+  font-size:9px;
+}
 
-    @media (max-width: 350px) {
-      .app {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
+.stat-value{
+  margin-top:5px;
+  font-size:18px;
+  font-weight:800;
+}
 
-      .panel {
-        padding: 13px;
-      }
+.multiplier{
+  color:#ffd166;
+}
 
-      .grid {
-        gap: 6px;
-      }
+/* BET */
 
-      .apple {
-        font-size: 23px;
-      }
+.bet-title{
+  font-size:13px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
 
-      .stat-value {
-        font-size: 17px;
-      }
-    }
-  </style>
+.bet-row{
+  display:flex;
+  gap:8px;
+}
+
+.bet-input{
+  flex:1;
+
+  min-width:0;
+
+  border:none;
+  outline:none;
+
+  border-radius:12px;
+
+  padding:13px;
+
+  background:rgba(0,0,0,.35);
+
+  color:white;
+
+  font-size:16px;
+  font-weight:bold;
+}
+
+.bet-button{
+  width:90px;
+
+  border:none;
+  border-radius:12px;
+
+  background:#286b3e;
+
+  color:white;
+
+  font-weight:bold;
+
+  cursor:pointer;
+}
+
+/* MESSAGE */
+
+.message{
+  text-align:center;
+
+  min-height:23px;
+
+  margin-bottom:13px;
+
+  font-size:14px;
+
+  font-weight:bold;
+}
+
+/* GRID */
+
+.grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:7px;
+}
+
+.apple{
+  aspect-ratio:1;
+
+  border:none;
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #234c34,
+      #14291e
+    );
+
+  color:white;
+
+  font-size:27px;
+
+  cursor:pointer;
+
+  box-shadow:
+    inset 0 -4px rgba(0,0,0,.22),
+    0 3px 7px rgba(0,0,0,.15);
+
+  transition:
+    transform .1s,
+    background .2s,
+    opacity .2s;
+}
+
+.apple:active{
+  transform:scale(.91);
+}
+
+.apple.good{
+  background:
+    linear-gradient(
+      145deg,
+      #31804b,
+      #205d35
+    );
+}
+
+.apple.bad{
+  background:
+    linear-gradient(
+      145deg,
+      #a52f2f,
+      #641a1a
+    );
+}
+
+.apple:disabled{
+  cursor:default;
+}
+
+/* CASH OUT */
+
+.cashout{
+  width:100%;
+
+  margin-top:12px;
+
+  padding:15px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:#ffd166;
+
+  color:#17100a;
+
+  font-size:16px;
+
+  font-weight:900;
+
+  cursor:pointer;
+
+  display:none;
+}
+
+.cashout.show{
+  display:block;
+}
+
+/* NEW ROUND */
+
+.new-round{
+  width:100%;
+
+  margin-top:8px;
+
+  padding:13px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:#f4a261;
+
+  color:#17100a;
+
+  font-size:14px;
+
+  font-weight:800;
+
+  cursor:pointer;
+
+  display:none;
+}
+
+.new-round.show{
+  display:block;
+}
+
+/* RESULT */
+
+.result{
+  display:none;
+
+  text-align:center;
+
+  padding:14px 5px 2px;
+}
+
+.result.show{
+  display:block;
+}
+
+.result-icon{
+  font-size:39px;
+}
+
+.result-title{
+  font-size:20px;
+  font-weight:800;
+  margin-top:4px;
+}
+
+.result-text{
+  color:#9fb8a8;
+  font-size:12px;
+  line-height:1.5;
+  margin-top:4px;
+}
+
+/* HISTORY */
+
+.history-title{
+  font-size:13px;
+  font-weight:bold;
+  margin-bottom:9px;
+}
+
+.history{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.history-item{
+  display:flex;
+  justify-content:space-between;
+
+  padding:8px 10px;
+
+  border-radius:9px;
+
+  background:rgba(0,0,0,.2);
+
+  font-size:11px;
+}
+
+.win{
+  color:#65d68a;
+}
+
+.loss{
+  color:#ff7373;
+}
+
+/* FOOTER */
+
+.footer{
+  text-align:center;
+
+  color:#687d70;
+
+  font-size:9px;
+
+  margin-top:15px;
+
+  line-height:1.5;
+}
+
+@media(max-width:350px){
+
+  .app{
+    padding-left:9px;
+    padding-right:9px;
+  }
+
+  .apple{
+    font-size:23px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-  <main class="app">
+<main class="app">
 
-    <header class="header">
-      <div class="logo">🍎</div>
+<header class="header">
 
-      <h1>Apple of Fortune</h1>
+  <div class="logo">🍎</div>
 
-      <div class="subtitle">
-        Choisis les bonnes pommes et progresse de niveau
+  <h1>Apple of Fortune</h1>
+
+  <div class="subtitle">
+    Choisis les bonnes pommes et fais monter ton multiplicateur
+  </div>
+
+</header>
+
+
+<!-- SOLDE -->
+
+<section class="balance">
+
+  <div class="balance-title">
+    SOLDE VIRTUEL
+  </div>
+
+  <div
+    class="balance-value"
+    id="balance"
+  >
+    10 000 FCFA
+  </div>
+
+</section>
+
+
+<!-- MISE -->
+
+<section class="panel">
+
+  <div class="bet-title">
+    Mise virtuelle
+  </div>
+
+  <div class="bet-row">
+
+    <input
+      id="betInput"
+      class="bet-input"
+      type="number"
+      min="100"
+      step="100"
+      value="500"
+      inputmode="numeric"
+    >
+
+    <button
+      id="betButton"
+      class="bet-button"
+    >
+      JOUER
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- STATISTIQUES -->
+
+<section class="panel">
+
+  <div class="stats">
+
+    <div class="stat">
+
+      <div class="stat-title">
+        NIVEAU
       </div>
-    </header>
 
-    <section class="panel">
-
-      <div class="stats">
-
-        <div class="stat">
-          <div class="stat-title">NIVEAU</div>
-          <div class="stat-value level" id="level">
-            1
-          </div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-title">MULTIPLICATEUR</div>
-          <div class="stat-value" id="multiplier">
-            x1.00
-          </div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-title">POMMES</div>
-          <div class="stat-value" id="score">
-            0
-          </div>
-        </div>
-
-      </div>
-
-      <div class="progress-container">
-
-        <div class="progress-label">
-          <span>Progression du niveau</span>
-          <span id="progressText">0 / 5</span>
-        </div>
-
-        <div class="progress-bar">
-          <div class="progress" id="progress"></div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="panel">
-
-      <div class="message" id="message">
-        Choisis une pomme 🍎
-      </div>
-
-      <div class="grid" id="grid"></div>
-
-      <div class="result" id="result">
-
-        <div class="result-icon" id="resultIcon">
-          💥
-        </div>
-
-        <div class="result-title" id="resultTitle">
-          Partie terminée
-        </div>
-
-        <div class="result-text" id="resultText">
-          Essaie encore pour battre ton score.
-        </div>
-
-      </div>
-
-    </section>
-
-    <div class="buttons">
-
-      <button
-        class="btn new-game"
-        id="newGameButton"
+      <div
+        class="stat-value"
+        id="level"
       >
-        🔄 Nouvelle partie
-      </button>
-
-      <button
-        class="btn share"
-        id="shareButton"
-      >
-        📤 Partager
-      </button>
+        1
+      </div>
 
     </div>
 
-    <footer class="footer">
-      Apple of Fortune<br>
-      Jeu de démonstration — aucun argent réel
-    </footer>
 
-  </main>
+    <div class="stat">
 
-  <script>
+      <div class="stat-title">
+        MULTIPLICATEUR
+      </div>
 
-    /* ==============================
-       ÉTAT DU JEU
-    ============================== */
+      <div
+        class="stat-value multiplier"
+        id="multiplier"
+      >
+        x1.00
+      </div>
 
-    let level = 1;
-    let score = 0;
-    let multiplier = 1;
-    let gameOver = false;
-    let dangerousApple = -1;
-
-    /* ==============================
-       ÉLÉMENTS HTML
-    ============================== */
-
-    const grid =
-      document.getElementById("grid");
-
-    const message =
-      document.getElementById("message");
-
-    const levelDisplay =
-      document.getElementById("level");
-
-    const scoreDisplay =
-      document.getElementById("score");
-
-    const multiplierDisplay =
-      document.getElementById("multiplier");
-
-    const progress =
-      document.getElementById("progress");
-
-    const progressText =
-      document.getElementById("progressText");
-
-    const result =
-      document.getElementById("result");
-
-    const resultIcon =
-      document.getElementById("resultIcon");
-
-    const resultTitle =
-      document.getElementById("resultTitle");
-
-    const resultText =
-      document.getElementById("resultText");
-
-    const newGameButton =
-      document.getElementById("newGameButton");
-
-    const shareButton =
-      document.getElementById("shareButton");
+    </div>
 
 
-    /* ==============================
-       NOUVELLE PARTIE
-    ============================== */
+    <div class="stat">
 
-    function newGame() {
+      <div class="stat-title">
+        GAIN POSSIBLE
+      </div>
 
-      level = 1;
-      score = 0;
-      multiplier = 1;
-      gameOver = false;
+      <div
+        class="stat-value"
+        id="potential"
+      >
+        500
+      </div>
 
-      result.classList.remove("show");
+    </div>
 
-      message.textContent =
-        "Choisis une pomme 🍎";
+  </div>
 
-      updateStats();
-
-      createGrid();
-    }
+</section>
 
 
-    /* ==============================
-       CRÉATION DE LA GRILLE
-    ============================== */
+<!-- JEU -->
 
-    function createGrid() {
+<section class="panel">
 
-      grid.innerHTML = "";
+  <div
+    class="message"
+    id="message"
+  >
+    Choisis ta mise puis appuie sur JOUER.
+  </div>
 
-      dangerousApple =
-        Math.floor(Math.random() * 15);
 
-      for (let i = 0; i < 15; i++) {
+  <div
+    class="grid"
+    id="grid"
+  ></div>
 
-        const button =
-          document.createElement("button");
 
-        button.className = "apple";
-        button.type = "button";
-        button.textContent = "🍎";
-        button.setAttribute(
-          "aria-label",
-          "Pomme " + (i + 1)
+  <button
+    id="cashoutButton"
+    class="cashout"
+  >
+    💰 ENCAISSER
+  </button>
+
+
+  <button
+    id="newRoundButton"
+    class="new-round"
+  >
+    🔄 NOUVELLE PARTIE
+  </button>
+
+
+  <div
+    class="result"
+    id="result"
+  >
+
+    <div
+      class="result-icon"
+      id="resultIcon"
+    >
+      💥
+    </div>
+
+    <div
+      class="result-title"
+      id="resultTitle"
+    >
+      Partie terminée
+    </div>
+
+    <div
+      class="result-text"
+      id="resultText"
+    ></div>
+
+  </div>
+
+</section>
+
+
+<!-- HISTORIQUE -->
+
+<section class="panel">
+
+  <div class="history-title">
+    Historique des manches
+  </div>
+
+  <div
+    class="history"
+    id="history"
+  >
+
+    <div class="history-item">
+      <span>Aucune manche</span>
+      <span>—</span>
+    </div>
+
+  </div>
+
+</section>
+
+
+<footer class="footer">
+
+  Apple of Fortune<br>
+
+  Simulation avec solde virtuel —
+  aucun argent réel.
+
+</footer>
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   PARAMÈTRES
+===================================================== */
+
+const START_BALANCE = 10000;
+
+/*
+   Coefficient utilisé pour augmenter
+   le multiplicateur après chaque bonne pomme.
+
+   Ce n'est PAS un algorithme de 1xBet.
+   C'est notre propre mécanique.
+*/
+
+const MULTIPLIER_STEP = 0.25;
+
+
+/* =====================================================
+   ÉTAT
+===================================================== */
+
+let balance = START_BALANCE;
+
+let bet = 0;
+
+let level = 1;
+
+let score = 0;
+
+let multiplier = 1;
+
+let gameActive = false;
+
+let gameOver = false;
+
+let dangerousApple = -1;
+
+let roundNumber = 0;
+
+let seed = 0;
+
+let nonce = 0;
+
+
+/* =====================================================
+   PRNG
+===================================================== */
+
+function createSeed(){
+
+  const now =
+    Date.now();
+
+  let cryptoValue = 0;
+
+  if(
+    window.crypto &&
+    window.crypto.getRandomValues
+  ){
+
+    const array =
+      new Uint32Array(2);
+
+    window.crypto.getRandomValues(array);
+
+    cryptoValue =
+      array[0] ^ array[1];
+  }
+
+  return (
+    now ^
+    cryptoValue ^
+    Math.floor(
+      Math.random() *
+      0xFFFFFFFF
+    )
+  ) >>> 0;
+}
+
+
+/*
+   Générateur Mulberry32.
+
+   La seed initialise l'état.
+   Chaque appel fait avancer l'état.
+*/
+
+function mulberry32(seed){
+
+  let state =
+    seed >>> 0;
+
+  return function(){
+
+    state =
+      (state + 0x6D2B79F5)
+      >>> 0;
+
+    let t =
+      state;
+
+    t =
+      Math.imul(
+        t ^ (t >>> 15),
+        t | 1
+      );
+
+    t ^=
+      t +
+      Math.imul(
+        t ^ (t >>> 7),
+        t | 61
+      );
+
+    return (
+      (t ^ (t >>> 14))
+      >>> 0
+    ) / 4294967296;
+  };
+}
+
+
+/* =====================================================
+   GÉNÉRATEUR DE LA PARTIE
+===================================================== */
+
+let generator;
+
+
+/*
+   Initialise une nouvelle séquence.
+*/
+
+function startRandomCycle(){
+
+  seed =
+    createSeed();
+
+  generator =
+    mulberry32(seed);
+
+  nonce = 0;
+}
+
+
+/*
+   Prochaine valeur du cycle.
+*/
+
+function nextRandom(){
+
+  nonce++;
+
+  return generator();
+}
+
+
+/*
+   Position de la pomme dangereuse.
+*/
+
+function generateDangerousApple(){
+
+  return Math.floor(
+    nextRandom() * 15
+  );
+}
+
+
+/* =====================================================
+   ÉLÉMENTS HTML
+===================================================== */
+
+const balanceDisplay =
+  document.getElementById("balance");
+
+const betInput =
+  document.getElementById("betInput");
+
+const betButton =
+  document.getElementById("betButton");
+
+const levelDisplay =
+  document.getElementById("level");
+
+const multiplierDisplay =
+  document.getElementById("multiplier");
+
+const potentialDisplay =
+  document.getElementById("potential");
+
+const message =
+  document.getElementById("message");
+
+const grid =
+  document.getElementById("grid");
+
+const cashoutButton =
+  document.getElementById("cashoutButton");
+
+const newRoundButton =
+  document.getElementById("newRoundButton");
+
+const result =
+  document.getElementById("result");
+
+const resultIcon =
+  document.getElementById("resultIcon");
+
+const resultTitle =
+  document.getElementById("resultTitle");
+
+const resultText =
+  document.getElementById("resultText");
+
+const history =
+  document.getElementById("history");
+
+
+/* =====================================================
+   FORMATAGE
+===================================================== */
+
+function formatMoney(value){
+
+  return Math.round(value)
+    .toLocaleString("fr-FR")
+    + " FCFA";
+}
+
+
+/* =====================================================
+   AFFICHER SOLDE
+===================================================== */
+
+function updateBalance(){
+
+  balanceDisplay.textContent =
+    formatMoney(balance);
+}
+
+
+/* =====================================================
+   AFFICHER STATISTIQUES
+===================================================== */
+
+function updateStats(){
+
+  levelDisplay.textContent =
+    level;
+
+  multiplierDisplay.textContent =
+    "x" +
+    multiplier.toFixed(2);
+
+  const potential =
+    bet * multiplier;
+
+  potentialDisplay.textContent =
+    Math.round(potential)
+      .toLocaleString("fr-FR");
+}
+
+
+/* =====================================================
+   CRÉER LA GRILLE
+===================================================== */
+
+function createGrid(){
+
+  grid.innerHTML = "";
+
+  for(
+    let i = 0;
+    i < 15;
+    i++
+  ){
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "apple";
+
+    button.type =
+      "button";
+
+    button.textContent =
+      "🍎";
+
+    button.disabled =
+      !gameActive;
+
+    button.addEventListener(
+      "click",
+      function(){
+
+        chooseApple(
+          button,
+          i === dangerousApple
         );
 
-        button.addEventListener(
-          "click",
-          function () {
-
-            chooseApple(
-              button,
-              i === dangerousApple
-            );
-
-          }
-        );
-
-        grid.appendChild(button);
       }
-    }
-
-
-    /* ==============================
-       CHOIX D'UNE POMME
-    ============================== */
-
-    function chooseApple(button, dangerous) {
-
-      if (gameOver || button.disabled) {
-        return;
-      }
-
-      button.disabled = true;
-
-      /* POMME DANGEREUSE */
-
-      if (dangerous) {
-
-        button.textContent = "💥";
-
-        button.classList.add("bad");
-
-        gameOver = true;
-
-        message.textContent =
-          "💥 Partie terminée !";
-
-        revealGrid();
-
-        showResult();
-
-        return;
-      }
-
-
-      /* BONNE POMME */
-
-      button.textContent = "⭐";
-
-      button.classList.add("good");
-
-      score++;
-
-      multiplier =
-        1 + (score * 0.25);
-
-
-      /* CHANGEMENT DE NIVEAU */
-
-      if (score % 5 === 0) {
-
-        level++;
-
-        message.textContent =
-          "🚀 Niveau " + level + " !";
-
-      } else {
-
-        message.textContent =
-          "⭐ Bonne pomme ! Continue...";
-
-      }
-
-      updateStats();
-    }
-
-
-    /* ==============================
-       RÉVÉLER LES POMMES RESTANTES
-    ============================== */
-
-    function revealGrid() {
-
-      const apples =
-        document.querySelectorAll(".apple");
-
-      apples.forEach(function (apple) {
-
-        if (!apple.disabled) {
-
-          apple.disabled = true;
-          apple.style.opacity = "0.45";
-
-        }
-
-      });
-    }
-
-
-    /* ==============================
-       AFFICHER LE RÉSULTAT
-    ============================== */
-
-    function showResult() {
-
-      result.classList.add("show");
-
-      resultIcon.textContent = "💥";
-
-      resultTitle.textContent =
-        "Partie terminée";
-
-      resultText.textContent =
-        "Tu as trouvé " +
-        score +
-        " bonne" +
-        (score > 1 ? "s" : "") +
-        " pomme" +
-        (score > 1 ? "s" : "") +
-        " et atteint le niveau " +
-        level +
-        ".";
-    }
-
-
-    /* ==============================
-       MISE À JOUR DES STATISTIQUES
-    ============================== */
-
-    function updateStats() {
-
-      levelDisplay.textContent =
-        level;
-
-      scoreDisplay.textContent =
-        score;
-
-      multiplierDisplay.textContent =
-        "x" + multiplier.toFixed(2);
-
-
-      const levelProgress =
-        score % 5;
-
-      const percentage =
-        levelProgress === 0 && score > 0
-          ? 100
-          : levelProgress * 20;
-
-      progress.style.width =
-        percentage + "%";
-
-      progressText.textContent =
-        levelProgress + " / 5";
-    }
-
-
-    /* ==============================
-       PARTAGE
-    ============================== */
-
-    async function shareGame() {
-
-      const text =
-        "🍎 Apple of Fortune\n\n" +
-        "J'ai trouvé " +
-        score +
-        " bonne" +
-        (score > 1 ? "s" : "") +
-        " pomme" +
-        (score > 1 ? "s" : "") +
-        " !";
-
-      if (navigator.share) {
-
-        try {
-
-          await navigator.share({
-            title: "Apple of Fortune",
-            text: text,
-            url: window.location.href
-          });
-
-        } catch (error) {
-
-          /* L'utilisateur a simplement fermé
-             la fenêtre de partage. */
-
-        }
-
-      } else {
-
-        try {
-
-          await navigator.clipboard.writeText(
-            window.location.href
-          );
-
-          message.textContent =
-            "🔗 Lien du jeu copié !";
-
-        } catch (error) {
-
-          message.textContent =
-            "📤 Partage non disponible sur cet appareil.";
-
-        }
-
-      }
-    }
-
-
-    /* ==============================
-       BOUTONS
-    ============================== */
-
-    newGameButton.addEventListener(
-      "click",
-      newGame
     );
 
-    shareButton.addEventListener(
-      "click",
-      shareGame
+    grid.appendChild(button);
+  }
+}
+
+
+/* =====================================================
+   DÉMARRER UNE PARTIE
+===================================================== */
+
+function startGame(){
+
+  if(gameActive){
+    return;
+  }
+
+
+  const requestedBet =
+    Number(
+      betInput.value
     );
 
 
-    /* ==============================
-       LANCEMENT
-    ============================== */
+  if(
+    !Number.isFinite(requestedBet) ||
+    requestedBet < 100
+  ){
 
-    newGame();
+    message.textContent =
+      "⚠️ La mise minimum est de 100 FCFA.";
 
-  </script>
+    return;
+  }
+
+
+  if(requestedBet > balance){
+
+    message.textContent =
+      "⚠️ Solde virtuel insuffisant.";
+
+    return;
+  }
+
+
+  bet =
+    Math.floor(requestedBet);
+
+
+  balance -= bet;
+
+
+  level = 1;
+
+  score = 0;
+
+  multiplier = 1;
+
+  gameActive = true;
+
+  gameOver = false;
+
+
+  roundNumber++;
+
+
+  /*
+     Chaque partie possède sa propre séquence.
+  */
+
+  startRandomCycle();
+
+
+  /*
+     Premier résultat du cycle :
+     position de la pomme dangereuse.
+  */
+
+  dangerousApple =
+    generateDangerousApple();
+
+
+  result.classList.remove(
+    "show"
+  );
+
+  cashoutButton.classList.add(
+    "show"
+  );
+
+  newRoundButton.classList.remove(
+    "show"
+  );
+
+
+  message.textContent =
+    "🍎 Choisis une pomme.";
+
+
+  updateBalance();
+
+  updateStats();
+
+  createGrid();
+}
+
+
+/* =====================================================
+   CHOISIR UNE POMME
+===================================================== */
+
+function chooseApple(
+  button,
+  dangerous
+){
+
+  if(
+    !gameActive ||
+    gameOver ||
+    button.disabled
+  ){
+
+    return;
+  }
+
+
+  button.disabled =
+    true;
+
+
+  /* PERDU */
+
+  if(dangerous){
+
+    button.textContent =
+      "💥";
+
+    button.classList.add(
+      "bad"
+    );
+
+
+    gameActive = false;
+
+    gameOver = true;
+
+
+    message.textContent =
+      "💥 Mauvaise pomme !";
+
+
+    revealGrid();
+
+    cashoutButton.classList.remove(
+      "show"
+    );
+
+
+    newRoundButton.classList.add(
+      "show"
+    );
+
+
+    showResult(
+      false,
+      0
+    );
+
+
+    addHistory(
+      false,
+      0
+    );
+
+
+    return;
+  }
+
+
+  /* GAGNÉ */
+
+  button.textContent =
+    "⭐";
+
+  button.classList.add(
+    "good"
+  );
+
+
+  score++;
+
+
+  multiplier =
+    1 +
+    score *
+    MULTIPLIER_STEP;
+
+
+  if(
+    score % 5 === 0
+  ){
+
+    level++;
+
+    message.textContent =
+      "🚀 Niveau " +
+      level +
+      " !";
+
+  }else{
+
+    message.textContent =
+      "⭐ Bonne pomme ! Continue...";
+  }
+
+
+  updateStats();
+
+
+  /*
+     Si toutes les cases sûres ont été
+     découvertes, on permet l'encaissement.
+  */
+
+  if(score >= 14){
+
+    cashOut();
+
+  }
+}
+
+
+/* =====================================================
+   ENCAISSEMENT
+===================================================== */
+
+function cashOut(){
+
+  if(
+    !gameActive ||
+    gameOver
+  ){
+
+    return;
+  }
+
+
+  const winnings =
+    Math.floor(
+      bet * multiplier
+    );
+
+
+  balance +=
+    winnings;
+
+
+  gameActive = false;
+
+
+  cashoutButton.classList.remove(
+    "show"
+  );
+
+
+  newRoundButton.classList.add(
+    "show"
+  );
+
+
+  message.textContent =
+    "💰 Gain encaissé !";
+
+
+  showResult(
+    true,
+    winnings
+  );
+
+
+  addHistory(
+    true,
+    winnings
+  );
+
+
+  updateBalance();
+}
+
+
+/* =====================================================
+   RÉVÉLER LA GRILLE
+===================================================== */
+
+function revealGrid(){
+
+  const apples =
+    document.querySelectorAll(
+      ".apple"
+    );
+
+
+  apples.forEach(
+    function(apple){
+
+      if(!apple.disabled){
+
+        apple.disabled =
+          true;
+
+        apple.style.opacity =
+          "0.42";
+      }
+
+    }
+  );
+}
+
+
+/* =====================================================
+   RÉSULTAT
+===================================================== */
+
+function showResult(
+  won,
+  amount
+){
+
+  result.classList.add(
+    "show"
+  );
+
+
+  if(won){
+
+    resultIcon.textContent =
+      "💰";
+
+    resultTitle.textContent =
+      "Gain encaissé !";
+
+    resultText.textContent =
+      "+" +
+      formatMoney(amount) +
+      " avec un multiplicateur de x" +
+      multiplier.toFixed(2) +
+      ".";
+      
+  }else{
+
+    resultIcon.textContent =
+      "💥";
+
+    resultTitle.textContent =
+      "Partie perdue";
+
+    resultText.textContent =
+      "Mise virtuelle perdue : " +
+      formatMoney(bet) +
+      ".";
+  }
+}
+
+
+/* =====================================================
+   HISTORIQUE
+===================================================== */
+
+function addHistory(
+  won,
+  amount
+){
+
+  /*
+     Retire le message "Aucune manche".
+  */
+
+  if(
+    history.children.length === 1 &&
+    history.children[0]
+      .textContent
+      .includes("Aucune manche")
+  ){
+
+    history.innerHTML = "";
+  }
+
+
+  const item =
+    document.createElement("div");
+
+  item.className =
+    "history-item";
+
+
+  const left =
+    document.createElement("span");
+
+  const right =
+    document.createElement("span");
+
+
+  left.textContent =
+    "Manche #" +
+    roundNumber;
+
+
+  if(won){
+
+    right.textContent =
+      "+" +
+      formatMoney(amount);
+
+    right.className =
+      "win";
+
+  }else{
+
+    right.textContent =
+      "-" +
+      formatMoney(bet);
+
+    right.className =
+      "loss";
+  }
+
+
+  item.appendChild(left);
+
+  item.appendChild(right);
+
+
+  history.prepend(item);
+
+
+  /*
+     Garde seulement les 10 dernières manches.
+  */
+
+  while(
+    history.children.length > 10
+  ){
+
+    history.removeChild(
+      history.lastChild
+    );
+  }
+}
+
+
+/* =====================================================
+   NOUVELLE PARTIE
+===================================================== */
+
+function newRound(){
+
+  gameActive = false;
+
+  gameOver = false;
+
+  bet = 0;
+
+  level = 1;
+
+  score = 0;
+
+  multiplier = 1;
+
+  dangerousApple = -1;
+
+
+  cashoutButton.classList.remove(
+    "show"
+  );
+
+  newRoundButton.classList.remove(
+    "show"
+  );
+
+
+  result.classList.remove(
+    "show"
+  );
+
+
+  message.textContent =
+    "Choisis ta mise puis appuie sur JOUER.";
+
+
+  updateStats();
+
+  createGrid();
+}
+
+
+/* =====================================================
+   BOUTONS
+===================================================== */
+
+betButton.addEventListener(
+  "click",
+  startGame
+);
+
+
+cashoutButton.addEventListener(
+  "click",
+  cashOut
+);
+
+
+newRoundButton.addEventListener(
+  "click",
+  newRound
+);
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+updateBalance();
+
+updateStats();
+
+createGrid();
+
+</script>
 
 </body>
 </html>
