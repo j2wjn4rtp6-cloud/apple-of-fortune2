@@ -1,1 +1,739 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <meta name="theme-color" content="#07130d">
+  <meta
+    name="description"
+    content="Apple of Fortune — choisis les bonnes pommes et progresse de niveau."
+  >
+
+  <title>Apple of Fortune</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #173b27 0%, transparent 35%),
+        linear-gradient(160deg, #07130d, #10251a);
+      color: white;
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 18px 15px 25px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 8px 0 18px;
+    }
+
+    .logo {
+      font-size: 58px;
+      line-height: 1;
+      filter: drop-shadow(0 5px 12px rgba(0,0,0,0.35));
+    }
+
+    h1 {
+      margin: 8px 0 5px;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      color: #a9c2b1;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .stat {
+      flex: 1;
+      text-align: center;
+      background: rgba(0,0,0,0.25);
+      border-radius: 14px;
+      padding: 11px 5px;
+      min-width: 0;
+    }
+
+    .stat-title {
+      font-size: 10px;
+      color: #9fb4a5;
+      letter-spacing: 0.4px;
+    }
+
+    .stat-value {
+      margin-top: 5px;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .level {
+      color: #ffd166;
+    }
+
+    .message {
+      text-align: center;
+      min-height: 24px;
+      margin: 1px 0 14px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .apple {
+      aspect-ratio: 1;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #214b32, #14291e);
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow:
+        inset 0 -4px rgba(0,0,0,0.2),
+        0 3px 8px rgba(0,0,0,0.15);
+      transition:
+        transform 0.1s,
+        background 0.2s,
+        opacity 0.2s;
+      touch-action: manipulation;
+    }
+
+    .apple:active {
+      transform: scale(0.91);
+    }
+
+    .apple.good {
+      background: linear-gradient(145deg, #31804b, #205c34);
+    }
+
+    .apple.bad {
+      background: linear-gradient(145deg, #9b3030, #641b1b);
+    }
+
+    .apple:disabled {
+      cursor: default;
+    }
+
+    .progress-container {
+      margin-top: 15px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      color: #9fb4a5;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 7px;
+      width: 100%;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: #ffd166;
+      border-radius: 10px;
+      transition: width 0.25s ease;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 10px;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .new-game {
+      background: #f4a261;
+      color: #17100a;
+    }
+
+    .share {
+      background: #229ed9;
+      color: white;
+    }
+
+    .result {
+      display: none;
+      text-align: center;
+      padding: 18px 10px 5px;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .result-icon {
+      font-size: 44px;
+      margin-bottom: 5px;
+    }
+
+    .result-title {
+      font-size: 21px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .result-text {
+      color: #a9c2b1;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
+      color: #718679;
+      font-size: 10px;
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 350px) {
+      .app {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .panel {
+        padding: 13px;
+      }
+
+      .grid {
+        gap: 6px;
+      }
+
+      .apple {
+        font-size: 23px;
+      }
+
+      .stat-value {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <header class="header">
+      <div class="logo">🍎</div>
+
+      <h1>Apple of Fortune</h1>
+
+      <div class="subtitle">
+        Choisis les bonnes pommes et progresse de niveau
+      </div>
+    </header>
+
+    <section class="panel">
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-title">NIVEAU</div>
+          <div class="stat-value level" id="level">
+            1
+          </div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-title">MULTIPLICATEUR</div>
+          <div class="stat-value" id="multiplier">
+            x1.00
+          </div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-title">POMMES</div>
+          <div class="stat-value" id="score">
+            0
+          </div>
+        </div>
+
+      </div>
+
+      <div class="progress-container">
+
+        <div class="progress-label">
+          <span>Progression du niveau</span>
+          <span id="progressText">0 / 5</span>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="panel">
+
+      <div class="message" id="message">
+        Choisis une pomme 🍎
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="result" id="result">
+
+        <div class="result-icon" id="resultIcon">
+          💥
+        </div>
+
+        <div class="result-title" id="resultTitle">
+          Partie terminée
+        </div>
+
+        <div class="result-text" id="resultText">
+          Essaie encore pour battre ton score.
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="buttons">
+
+      <button
+        class="btn new-game"
+        id="newGameButton"
+      >
+        🔄 Nouvelle partie
+      </button>
+
+      <button
+        class="btn share"
+        id="shareButton"
+      >
+        📤 Partager
+      </button>
+
+    </div>
+
+    <footer class="footer">
+      Apple of Fortune<br>
+      Jeu de démonstration — aucun argent réel
+    </footer>
+
+  </main>
+
+  <script>
+
+    /* ==============================
+       ÉTAT DU JEU
+    ============================== */
+
+    let level = 1;
+    let score = 0;
+    let multiplier = 1;
+    let gameOver = false;
+    let dangerousApple = -1;
+
+    /* ==============================
+       ÉLÉMENTS HTML
+    ============================== */
+
+    const grid =
+      document.getElementById("grid");
+
+    const message =
+      document.getElementById("message");
+
+    const levelDisplay =
+      document.getElementById("level");
+
+    const scoreDisplay =
+      document.getElementById("score");
+
+    const multiplierDisplay =
+      document.getElementById("multiplier");
+
+    const progress =
+      document.getElementById("progress");
+
+    const progressText =
+      document.getElementById("progressText");
+
+    const result =
+      document.getElementById("result");
+
+    const resultIcon =
+      document.getElementById("resultIcon");
+
+    const resultTitle =
+      document.getElementById("resultTitle");
+
+    const resultText =
+      document.getElementById("resultText");
+
+    const newGameButton =
+      document.getElementById("newGameButton");
+
+    const shareButton =
+      document.getElementById("shareButton");
+
+
+    /* ==============================
+       NOUVELLE PARTIE
+    ============================== */
+
+    function newGame() {
+
+      level = 1;
+      score = 0;
+      multiplier = 1;
+      gameOver = false;
+
+      result.classList.remove("show");
+
+      message.textContent =
+        "Choisis une pomme 🍎";
+
+      updateStats();
+
+      createGrid();
+    }
+
+
+    /* ==============================
+       CRÉATION DE LA GRILLE
+    ============================== */
+
+    function createGrid() {
+
+      grid.innerHTML = "";
+
+      dangerousApple =
+        Math.floor(Math.random() * 15);
+
+      for (let i = 0; i < 15; i++) {
+
+        const button =
+          document.createElement("button");
+
+        button.className = "apple";
+        button.type = "button";
+        button.textContent = "🍎";
+        button.setAttribute(
+          "aria-label",
+          "Pomme " + (i + 1)
+        );
+
+        button.addEventListener(
+          "click",
+          function () {
+
+            chooseApple(
+              button,
+              i === dangerousApple
+            );
+
+          }
+        );
+
+        grid.appendChild(button);
+      }
+    }
+
+
+    /* ==============================
+       CHOIX D'UNE POMME
+    ============================== */
+
+    function chooseApple(button, dangerous) {
+
+      if (gameOver || button.disabled) {
+        return;
+      }
+
+      button.disabled = true;
+
+      /* POMME DANGEREUSE */
+
+      if (dangerous) {
+
+        button.textContent = "💥";
+
+        button.classList.add("bad");
+
+        gameOver = true;
+
+        message.textContent =
+          "💥 Partie terminée !";
+
+        revealGrid();
+
+        showResult();
+
+        return;
+      }
+
+
+      /* BONNE POMME */
+
+      button.textContent = "⭐";
+
+      button.classList.add("good");
+
+      score++;
+
+      multiplier =
+        1 + (score * 0.25);
+
+
+      /* CHANGEMENT DE NIVEAU */
+
+      if (score % 5 === 0) {
+
+        level++;
+
+        message.textContent =
+          "🚀 Niveau " + level + " !";
+
+      } else {
+
+        message.textContent =
+          "⭐ Bonne pomme ! Continue...";
+
+      }
+
+      updateStats();
+    }
+
+
+    /* ==============================
+       RÉVÉLER LES POMMES RESTANTES
+    ============================== */
+
+    function revealGrid() {
+
+      const apples =
+        document.querySelectorAll(".apple");
+
+      apples.forEach(function (apple) {
+
+        if (!apple.disabled) {
+
+          apple.disabled = true;
+          apple.style.opacity = "0.45";
+
+        }
+
+      });
+    }
+
+
+    /* ==============================
+       AFFICHER LE RÉSULTAT
+    ============================== */
+
+    function showResult() {
+
+      result.classList.add("show");
+
+      resultIcon.textContent = "💥";
+
+      resultTitle.textContent =
+        "Partie terminée";
+
+      resultText.textContent =
+        "Tu as trouvé " +
+        score +
+        " bonne" +
+        (score > 1 ? "s" : "") +
+        " pomme" +
+        (score > 1 ? "s" : "") +
+        " et atteint le niveau " +
+        level +
+        ".";
+    }
+
+
+    /* ==============================
+       MISE À JOUR DES STATISTIQUES
+    ============================== */
+
+    function updateStats() {
+
+      levelDisplay.textContent =
+        level;
+
+      scoreDisplay.textContent =
+        score;
+
+      multiplierDisplay.textContent =
+        "x" + multiplier.toFixed(2);
+
+
+      const levelProgress =
+        score % 5;
+
+      const percentage =
+        levelProgress === 0 && score > 0
+          ? 100
+          : levelProgress * 20;
+
+      progress.style.width =
+        percentage + "%";
+
+      progressText.textContent =
+        levelProgress + " / 5";
+    }
+
+
+    /* ==============================
+       PARTAGE
+    ============================== */
+
+    async function shareGame() {
+
+      const text =
+        "🍎 Apple of Fortune\n\n" +
+        "J'ai trouvé " +
+        score +
+        " bonne" +
+        (score > 1 ? "s" : "") +
+        " pomme" +
+        (score > 1 ? "s" : "") +
+        " !";
+
+      if (navigator.share) {
+
+        try {
+
+          await navigator.share({
+            title: "Apple of Fortune",
+            text: text,
+            url: window.location.href
+          });
+
+        } catch (error) {
+
+          /* L'utilisateur a simplement fermé
+             la fenêtre de partage. */
+
+        }
+
+      } else {
+
+        try {
+
+          await navigator.clipboard.writeText(
+            window.location.href
+          );
+
+          message.textContent =
+            "🔗 Lien du jeu copié !";
+
+        } catch (error) {
+
+          message.textContent =
+            "📤 Partage non disponible sur cet appareil.";
+
+        }
+
+      }
+    }
+
+
+    /* ==============================
+       BOUTONS
+    ============================== */
+
+    newGameButton.addEventListener(
+      "click",
+      newGame
+    );
+
+    shareButton.addEventListener(
+      "click",
+      shareGame
+    );
+
+
+    /* ==============================
+       LANCEMENT
+    ============================== */
+
+    newGame();
+
+  </script>
+
+</body>
+</html>
